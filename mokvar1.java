@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
-import java.awt.event.*;
+import java.awt.event.*;                             //puuttuu vielä toiminto joka sulkee välilehdet jos käyttää return nappulaa 
+import java.awt.event.*;                            //varausvälilehdellä. Lisäpalvelut pathingi on vielä vajaa.
 import java.awt.*;
 
 public class mokvar1 {
