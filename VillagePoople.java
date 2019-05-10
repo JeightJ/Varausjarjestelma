@@ -14,7 +14,7 @@ import javax.swing.border.EmptyBorder;
 public class VillagePoople extends JFrame 
 {
 	private JPanel ruutu;	    //Tehdään paneeli meidän käyttöön
-
+	private JPanel raamit;
 	 // Maini jolla itse ohjelma rullaa eteenpäin
 	public static void main(String[] args)
 	{
@@ -56,9 +56,25 @@ public class VillagePoople extends JFrame
 		{
 			public void actionPerformed(ActionEvent arg0)
 			{
-				//kutsuu classia AasiRuutu
+				//kutsuu classia AasiRuutu				
+				raamit = new JPanel();		//Tuossa JPaneeli mihin laitetaan sisältöä / yritetään luoda asiakkaalle oma ruutu
 				AasiRuutu raamit = new AasiRuutu();
 				raamit.setVisible(true);
+				raamit.setTitle("Asiakas");
+				raamit.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+				raamit.setBounds(500, 500, 750, 750);
+				        //set Label in the frame
+						JLabel VPAsia = new JLabel("Alta löydät lisäpalvelut sekä mökkivaihtoehdot");
+						//set foreground color to the label
+						VPAsia.setForeground(Color.BLUE);
+						//set font of that label
+        				VPAsia.setFont(new Font("Times New Roman", Font.BOLD | Font.ITALIC, 24));
+						//set bound of the label
+						VPAsia.setBounds(100, 50, 750, 39);
+						//add label to the contentPane
+						raamit.add(VPAsia);
+				setContentPane(raamit);
+				raamit.setLayout(null); 
 				//set default close operation
 				setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 			}

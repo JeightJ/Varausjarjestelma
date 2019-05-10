@@ -37,7 +37,7 @@ public class AasiRuutu extends JFrame{
 		});
 	}
 
-
+/*
     public void AasiRuutu()  //constructori jolla luodaan asiakasruutu, periaatteessa identtinen VillagePooplen samanmoiseen
     {
         setTitle("Asiakas");
@@ -59,5 +59,5 @@ public class AasiRuutu extends JFrame{
 		VPAsia.setBounds(100, 50, 750, 39);
 		//add label to the contentPane
 		aRuutu.add(VPAsia);
-    }
+	} */
 }
