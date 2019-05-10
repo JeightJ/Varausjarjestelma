@@ -10,7 +10,7 @@ public class Asiakashallinta {
 	
 	Connection yhteys;
 	
-	// Kontruktori
+	// Konstruktori, saa parametrinä tietokantayhteyden
 	public Asiakashallinta(Connection yhteys) {
 		yhteys = this.yhteys;
 	}
