@@ -3,6 +3,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.awt.event.*;
 import java.awt.*;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 
 public class mokvar1 {
 
@@ -13,7 +17,8 @@ public class mokvar1 {
 public static void main (String[] args){    
   JFrame frame = new JFrame("Test");
   frame.setVisible(true);                                   //kehys näkyviin
-  frame.setSize(1000,700);                                     //kehyrin koko
+  frame.setSize(1000,450);    
+  frame.setLocation(450,100);                                //kehyrin koko ja sijainti
   frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);      //sulkee keharin ruksista
 
 
@@ -64,15 +69,43 @@ static class Action1 implements ActionListener {                    //implementt
 }   
 static class Action2 implements ActionListener {        
   public void actionPerformed (ActionEvent e) {     
-    JFrame frame3 = new JFrame("OKNO 3");                       //kakkosnappulan samat setit ^
+    JFrame frame3 = new JFrame("Palveluvalikko");                       //kakkosnappulan samat setit ^
     frame3.setVisible(true);
-    frame3.setSize(200,200);
-    frame3.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+    frame3.setSize(500,400);
+    frame3.setLocation(490,130);
+    frame3.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    JPanel panel2 = new JPanel();
 
+
+    JCheckBox checkbox1 = new JCheckBox("Palju");
+    JCheckBox checkbox2 = new JCheckBox("Liinavaatteet");      
+    JCheckBox checkbox3 = new JCheckBox("Siivous");
+    JCheckBox checkbox4 = new JCheckBox("Vene");
+    JButton tallenna = new JButton("Tallenna");
+
+    panel2.setBorder(BorderFactory.createTitledBorder("Palvelut"));
+
+    panel2.add(checkbox1);
+        panel2.add(checkbox2);
+        panel2.add(checkbox3);
+        panel2.add(checkbox4);
+        panel2.add(tallenna);
+
+        frame3.add(panel2);
+
+        frame3.pack();
+        frame3.setVisible(true);
+
+    
     JLabel label = new JLabel("Varrailuhommat");
     JPanel panel = new JPanel();
+
+
     frame3.add(panel);
+    
     panel.add(label);
+ 
+}
   }
-}
-}
+ }
+
