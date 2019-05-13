@@ -5,17 +5,18 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Scanner;
 
 public class Asiakashallinta {
 	
 	Connection yhteys;
 	
-	// Konstruktori, saa parametrinä tietokantayhteyden
+	// Kontruktori
 	public Asiakashallinta(Connection yhteys) {
 		yhteys = this.yhteys;
 	}
 	
-	// Asiakkaan lisäys tietokantaan, parametreinä kaikki
+	// Asiakkaan lisäys tietokantaan
 	public void lisaaAsiakas(String etunimi, String sukunimi, String osoite, String postitoimipaikka, String postinumero, String email, int puhNum) throws SQLException {
 		
 		PreparedStatement stmt = null;
@@ -32,7 +33,7 @@ public class Asiakashallinta {
 		}
 	}
 	
-	// Asiakkaan tietojen hakeminen tietokannasta, parametreinä etunimi ja sukunimi
+	// Asiakkaan tietojen hakeminen tietokannasta
 	public void haeAsiakas(String etunimi, String sukunimi) throws SQLException {
 		
 		Statement stmt = yhteys.createStatement();
@@ -41,9 +42,9 @@ public class Asiakashallinta {
 			String strSelect = "SELECT * FROM vp.asiakas WHERE etunimi=" + etunimi + " AND sukunimi=" + sukunimi + ";";
 			ResultSet rset = stmt.executeQuery(strSelect);
 			
-			System.out.println("Tulokset:");
+			System.out.println("The records selected are:");
 	         int rowCount = 0;
-	         while(rset.next()) {   // Siirtää kursorin seuraavalle riville, palauttaa Falsen jos ei enempää rivejä
+	         while(rset.next()) {   // Move the cursor to the next row, return false if no more row
 	            int asiakasID = rset.getInt("asiakas_id");
 	        	String fName = rset.getString("etunimi");
 	            String lName = rset.getString("sukunimi");
@@ -68,7 +69,40 @@ public class Asiakashallinta {
 		}
 	}
 	
-  // Metodi asiakkaan poistamiseen, parametreinä etunimi ja sukunimi
+	// Asiakkaan tietojen muokkaus
+	public void muokkaaAsiakas(String etunimi, String sukunimi) {
+		
+		// Seuraava consolessa tapahtuva syötteiden pyytäminen, katsotaan kuinka toteutetaan GUI:ssa
+		Scanner lukija = new Scanner(System.in);
+		System.out.println("Mitä tietoa muokataan? ");
+		System.out.println("1 - Lähiosoite ");
+		System.out.println("2 - Postitoimipaikka ");
+		System.out.println("3 - Postinumero ");
+		System.out.println("4 - Sähköposti ");
+		System.out.println("5 - Puhelinnumero ");
+		int valittuTieto = lukija.nextInt();
+		
+		switch (valittuTieto) {
+		case 1: 
+			System.out.println("Anna uusi osoite: ");
+			String uusiOsoite = lukija.nextLine();
+			// Näiden jälkeen SQL kysely UPDATE - toiminnolla
+		case 2:
+			System.out.println("Anna uusi postitoimipaikka: ");
+			String uusiToimipaikka = lukija.nextLine();
+		case 3:
+			System.out.println("Anna uusi postinumero: ");
+			String uusiPostinumero = lukija.nextLine();
+		case 4:
+			System.out.println("Anna uusi email: ");
+			String uusiEmail = lukija.nextLine();
+		case 5:
+			System.out.println("Anna uusi puhelinnumero: ");
+			String uusiPuhNum = lukija.nextLine();
+		}
+	}
+	
+	// Asiakkaan kaikkien tietojen poistaminen
 	public void poistaAsiakas(String etunimi, String sukunimi) throws SQLException {
 		
 		PreparedStatement stmt = null;
