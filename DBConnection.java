@@ -6,13 +6,14 @@ import java.sql.*;
 public class DBConnection {
 	
 	private Connection yhteys;
-	String dbNimi;
 	
 	public DBConnection() {
 	}
 	
+	// luoYhteys -metodi ottaa parametreiksi tietokannanhallintaohjelman käyttäjätunnuksen ja salasanan
 	public Connection luoYhteys(String username, String password) {
-		try {								
+		try {	
+			// ÄLÄ KOSKE url -muuttujaan
 			// Database URL syntax = jdbc:mysql://host:port/database?propertyName1=propertyValue1&propertyName2=propertyValue2...
 			String url = "jdbc:mysql://localhost:3306/vp?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
 			
