@@ -10,9 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 
-public class AasiRuutu extends JFrame{
+public class yrRuutu extends JFrame{
 
-    private JPanel aRuutu;
+    private JPanel yruutu;
 
     public static void main(String[] args)
 	{
@@ -26,8 +26,8 @@ public class AasiRuutu extends JFrame{
 				try 
 				{
 					//Kutsuu AasiRuutu constructoria luomaan meille ekan käyttöliittymän
-					AasiRuutu Ruutu = new AasiRuutu();
-					//Ruutu.setVisible(true);	//yksiselitteinen			
+					yrRuutu Ruutu = new yrRuutu();
+					Ruutu.setVisible(true);	//yksiselitteinen			
 				} 
 				catch (Exception e)
 				{
