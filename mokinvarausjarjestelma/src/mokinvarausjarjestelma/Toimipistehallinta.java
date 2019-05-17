@@ -20,6 +20,29 @@ public class Toimipistehallinta {
 		this.yhteys = yhteys;
 	}
 	
+	public String haeID (String nimi) throws SQLException {
+		
+		Statement stmt = yhteys.createStatement();
+		
+		try {
+			String strSelect = "SELECT toimipiste_id FROM vp.toimipiste WHERE nimi='" + nimi + "';";
+			ResultSet rset = stmt.executeQuery(strSelect);
+			if (rset.next()) {
+				String foundType = rset.getString(1);
+			}
+			int toimipisteID = rset.getInt("toimipiste_id");
+			String palautus = new Integer(toimipisteID).toString();
+			return palautus;
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return null;	
+	}
+	
 	public void lisaaToimipiste(String nimi, String osoite, String toimipaikka, int postinumero, String email, int puhNum) throws SQLException {
 		
 			PreparedStatement stmt = null;
@@ -34,32 +57,6 @@ public class Toimipistehallinta {
 					stmt.close();
 				}
 			}
-	}
-	
-	public ArrayList<String> haePalvelut(int toimipisteID) throws SQLException {
-		
-		Statement stmt = yhteys.createStatement();
-		lista = new ArrayList<String>();
-		
-		try {
-			String strSelect = "SELECT palvelu_id, toimipiste_id, nimi FROM vp.palvelu WHERE palvelu.toimipiste_id=toimipiste.toimipiste_id AND toimipiste_id=" + toimipisteID +";";
-			ResultSet rset = stmt.executeQuery(strSelect);
-			
-			if (rset.next()) {
-				lista.add(rset.getString(1));
-			}
-			
-			lista.add(rset.getString("nimi"));
-			
-			return lista;
-		} catch (SQLException e) {
-			System.out.println(e);
-		} finally {
-			if (stmt != null) {
-				stmt.close();
-			}
-		}
-		return null;
 	}
 	
 	public String haeToimipiste(String nimi) throws SQLException {
@@ -134,7 +131,7 @@ public class Toimipistehallinta {
 		
 		switch (palvelu) {
 		case "Moottorikelkkasafari": 
-			kuvaus = "1 hlˆ/kelkka";
+			kuvaus = "1 hl√∂/kelkka";
 			hinta = 140.00;
 			alv = 5.00;
 		case "Hieronta":
@@ -142,11 +139,11 @@ public class Toimipistehallinta {
 			hinta = 65.00;
 			alv = 5.00;
 		case "Paintball":
-			kuvaus = "1 hlˆ. Sis‰lt‰‰ aseen vuokran";
+			kuvaus = "1 hl√∂. Sis√§lt√§√§ aseen vuokran";
 			hinta = 30.00;
 			alv = 2.00;
 		case "Intiaaninuotio":
-			kuvaus = "Sis‰lt‰‰ makkarat.";
+			kuvaus = "Sis√§lt√§√§ makkarat.";
 			hinta = 10.00;
 			alv = 1.00;	
 		}
