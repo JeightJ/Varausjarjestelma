@@ -9,8 +9,11 @@ import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -18,6 +21,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
@@ -29,14 +33,15 @@ public class AasiRuutu extends JFrame{
 	Connection yhteys;
 	
 	Asiakashallinta uusiAsiakas;
+	Toimipistehallinta toimipisteVaraus;
 	Varaus uusiVaraus;
+	Date varausAlkaa, varausLoppuu;
 	
 	DBConnection conn = new DBConnection();
 	
 	JTextField etunimiKentta, sukunimiKentta, osoiteKentta, toimipaikkaKentta, postinumeroKentta, emailKentta, puhnroKentta;
 	String etunimiInput, sukunimiInput, osoiteInput, toimipaikkaInput, postinumeroInput, emailInput, valikkoInput, valikkoInput2, laskutustapa;
 	int puhnroInput;
-	int kohdeID;
 	
 	///////////////////////////////////////////
 	/* Konstruktori, joka luo asiakasikkunan */
@@ -51,7 +56,7 @@ public class AasiRuutu extends JFrame{
         aRuutu.setLayout(null);
         
         //set Label in the frame
-		JLabel VPAsia = new JLabel("Alta lˆyd‰t lis‰palvelut sek‰ mˆkkivaihtoehdot");
+		JLabel VPAsia = new JLabel("Alta l√∂yd√§t lis√§palvelut sek√§ m√∂kkivaihtoehdot");
 		//set foreground color to the label
 		VPAsia.setForeground(Color.BLUE);
 		//set font of that label
@@ -63,19 +68,18 @@ public class AasiRuutu extends JFrame{
 		
 		JRadioButton paperinen = new JRadioButton("Paperinen lasku");
 		paperinen.setActionCommand("paperi");
-		JRadioButton sahkoinen = new JRadioButton("S‰hkˆinen lasku");
+		JRadioButton sahkoinen = new JRadioButton("S√§hk√∂inen lasku");
 		sahkoinen.setActionCommand("sahko");
 		
 		ButtonGroup group = new ButtonGroup();
 	    group.add(paperinen);
 	    group.add(sahkoinen);
 	    
-	    ArrayList<String> palveluLista = new ArrayList<String>();   
-        palveluLista.add("Moottorikelkkasafari");
-        palveluLista.add("Hieronta");
-        palveluLista.add("Paintball");
-        palveluLista.add("Intiaaninuotio");
-        JComboBox comboBox2 = new JComboBox(palveluLista.toArray());
+        JComboBox comboBox2 = new JComboBox();
+        comboBox2.addItem("Moottorikelkkasafari");
+        comboBox2.addItem("Hieronta");
+        comboBox2.addItem("Paintball");
+        comboBox2.addItem("Intiaaninuotio");
 	    comboBox2.addActionListener(new ActionListener() {
 	    	public void actionPerformed(ActionEvent arg0) {
 	    	}
@@ -84,56 +88,22 @@ public class AasiRuutu extends JFrame{
 	    JComboBox comboBox = new JComboBox();
 	    comboBox.addItem("Valitse");
 	    comboBox.addItem("Lomamaja");
-	    comboBox.addItem("Tiipiikyl‰");
-	    comboBox.addItem("Mˆkkim‰ki");
+	    comboBox.addItem("Tiipiikyl√§");
+	    comboBox.addItem("M√∂kkim√§ki");
 	    comboBox.addActionListener(new ActionListener() {	        
 	    	public void actionPerformed(ActionEvent arg0) {
-	    		
-	    	    valikkoInput = (String) comboBox.getSelectedItem();
-	    	    
-	    		switch (valikkoInput) {
-				case "Lomamaja": kohdeID = 1;
-				case "Tiipiikyl‰": kohdeID = 2;
-				case "Mˆkkim‰ki": kohdeID = 3;
-				}
-				
-				Toimipistehallinta toimha = new Toimipistehallinta(yhteys);
-				try {
-					ArrayList<String> kaikkiPalvelut = toimha.haePalvelut(kohdeID);
-					
-			        if (!kaikkiPalvelut.contains("Moottorikelkkasafari")) {
-			        	palveluLista.remove("Moottorikelkkasafari");
-			        }
-			        if (!kaikkiPalvelut.contains("Hieronta")) {
-			        	palveluLista.remove("Hieronta");
-			        }
-			        if (!kaikkiPalvelut.contains("Paintball")) {
-			        	palveluLista.remove("Paintball");
-			        }
-			        if (!kaikkiPalvelut.contains("Intiaaninuotio")) {
-			        	palveluLista.remove("Intiaaninuotio");
-			        }
-				} catch (SQLException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-	    	}    
+	    	}
 	    });
-	    
-
-	    valikkoInput2 = (String) comboBox2.getSelectedItem();
-	    
-	    
 	    
 	    JLabel etunimi = new JLabel("Etunimi");
 	    JLabel sukunimi = new JLabel("Sukunimi");
-	    JLabel osoite = new JLabel("L‰hiosoite");
+	    JLabel osoite = new JLabel("L√§hiosoite");
 	    JLabel paikka = new JLabel("Postitoimipaikka");
 	    JLabel postinumero = new JLabel("Postinumero");
-	    JLabel email = new JLabel("S‰hkˆposti");
+	    JLabel email = new JLabel("S√§hk√∂posti");
 	    JLabel puhnro = new JLabel("Puhelinnumero");
 	    JLabel lomakohde = new JLabel("Valitse lomakohde");
-	    JLabel palvelu = new JLabel("Valitse lis‰palvelu");
+	    JLabel palvelu = new JLabel("Valitse lis√§palvelu");
 	    
 	    etunimiKentta = new JTextField(20);
 	    sukunimiKentta = new JTextField(20);
@@ -163,25 +133,52 @@ public class AasiRuutu extends JFrame{
 				emailInput = emailKentta.getText();
 				puhnroInput = Integer.parseInt(puhnroKentta.getText());
 				
+			    valikkoInput = (String) comboBox.getSelectedItem();
+			    valikkoInput2 = (String) comboBox2.getSelectedItem();
+				
+				JTextField varausFrom = new JTextField();
+				JTextField varausTo = new JTextField();
+				Object[] viesti = {
+				    "Saapumisp√§iv√§ (yyyy-mm-dd)", varausFrom,
+				    "L√§ht√∂p√§iv√§ (yyyy-mm-dd)", varausTo
+				};
+				
+				JOptionPane.showMessageDialog(aRuutu, viesti, "Matkan ajankohta", JOptionPane.QUESTION_MESSAGE);
+				
+				SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+				
+				String varausAlkaa = varausFrom.getText();
+				String varausLoppuu = varausTo.getText();
+	
 				uusiAsiakas = new Asiakashallinta(yhteys);
-				
-				
+				toimipisteVaraus = new Toimipistehallinta(yhteys);
+								
 				try {
 					uusiAsiakas.lisaaAsiakas(etunimiInput, sukunimiInput, osoiteInput, toimipaikkaInput, postinumeroInput, emailInput, puhnroInput);
-					//lisaaVaraus.lisaaVaraus(asiakasID, kohdeID, palvelu, palveluLkm, varausAika, varausAlkaa, varausLoppuu);
+					String asiakasIDstr = uusiAsiakas.haeID(etunimiInput, sukunimiInput);
+					int asiakasID = Integer.parseInt(asiakasIDstr);
+					String toimipisteIDstr = toimipisteVaraus.haeID(valikkoInput);
+					int toimipisteID = Integer.parseInt(toimipisteIDstr);
+					
+					uusiVaraus.lisaaVaraus(asiakasID, toimipisteID, varausAlkaa, varausLoppuu);
+					
+					JOptionPane.showMessageDialog(aRuutu, 
+							"Varaus tehty ajankohdalle " + varausAlkaa + " - " + varausLoppuu,
+							"Ilmoitus",
+							JOptionPane.WARNING_MESSAGE);
 					
 				} catch (SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				//uusiVaraus.lisaaVaraus(int asiakasID, int toimipisteID, String palvelu, int palveluLkm, Time varausAika, Time varausAlkaa, Time varausLoppuu);
+				
 				
 				//uusiPalvelu.lisaaPalvelut();
 			}
 		});
 		
 		///////////////////////////////////////////////////////////////////////
-		/* Elementtien sijainnit, koot ja niiden lis‰‰minen k‰yttˆliittym‰‰n */
+		/* Elementtien sijainnit, koot ja niiden lis√§√§minen k√§ytt√∂liittym√§√§n */
 		///////////////////////////////////////////////////////////////////////
 		etunimi.setBounds(130, 150, 75, 20);
 		aRuutu.add(etunimi);
